@@ -5,6 +5,12 @@ import java.security.spec.InvalidKeySpecException;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * 
+ * @author <michal.klempa@gmail.com>
+ * 
+ * @see http://www.michalklempa.com/2015/02/08/how-to-add-pbkdf2-password-hashing-to-a-spring-security-based-project/
+ */
 public class PBKDF2PasswordEncoder implements PasswordEncoder {
 
 	@Override
