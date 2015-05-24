@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:data="http://www.springframework.org/schema/data/jpa"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/data/jpa 
+	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="loadTimeWeaver">
+			<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+		</property>
+		<property name="packagesToScan">
+			<array>
+				<value>es.ucm.fdi.users.business.entity</value>
+				<value>es.ucm.fdi.avisos.business.entity</value>
+				<value>es.ucm.fdi.storage.business.entity</value>
+				<value>es.ucm.fdi.espacios.business.entity</value>
+				<value>es.ucm.fdi.acortador.business.entity</value>
+				<value>es.ucm.fdi.tutorias.business.entity</value>
+				<value>es.ucm.fdi.social.web</value>
+				<value>es.ucm.fdi.util</value>
+			</array>
+		</property>
+		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.max_fetch_depth">3</prop>
+				<prop key="hibernate.jdbc.fetch_size">50</prop>
+				<prop key="hibernate.jdbc.batch_size">10</prop>
+				<prop key="hibernate.hbm2ddl.import_files">${hibernate.hbm2ddl.import_files}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+		p:entityManagerFactory-ref="entityManagerFactory" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- Packages to search for @Repository beans definitions -->
+	<data:repositories base-package="es.ucm.fdi.storage.business.control"
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="transactionManager" />
+		
+	<data:repositories base-package="es.ucm.fdi.avisos.business.control" 
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="transactionManager" />
+		
+	<data:repositories base-package="es.ucm.fdi.espacios.business.control" 
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="transactionManager" />
+		
+	<data:repositories base-package="es.ucm.fdi.users.business.control" 
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="transactionManager" />
+		
+	<data:repositories base-package="es.ucm.fdi.acortador.business.control" 
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="transactionManager" />
+		
+	<data:repositories base-package="es.ucm.fdi.social.web"
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="transactionManager" />		
+	
+	<data:repositories base-package="es.ucm.fdi.tutorias.business.control"
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="transactionManager" />
+
+	<data:repositories base-package="es.ucm.fdi.users.business.control"
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="transactionManager" />
+</beans>

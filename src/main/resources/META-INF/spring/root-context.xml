@@ -1,70 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:util="http://www.springframework.org/schema/util"
 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util.xsd
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!--  -->
-	<!-- MultipartResolver utilizado en MultipartFilter -->
-	<!-- -->
-	<bean id="filterMultipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="10240000" />
-	</bean>
-	
-	<!--  -->
-	<!-- Database -->
-	<!--  -->
-		
 	<!-- Twitter, Database and JPA properties -->
 	<context:property-placeholder location="classpath:db.properties, classpath:social.properties, classpath:security.properties, classpath:gmail.properties" />
 
-	<bean id="rootEntityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="rootDataSource" />
-		<property name="loadTimeWeaver">
-			<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
-		</property>
-		<property name="packagesToScan">
-			<array>
-				<value>es.ucm.fdi.users.business.entity</value>
-				<value>es.ucm.fdi.avisos.business.entity</value>
-				<value>es.ucm.fdi.storage.business.entity</value>
-				<value>es.ucm.fdi.espacios.business.entity</value>
-				<value>es.ucm.fdi.acortador.business.entity</value>
-				<value>es.ucm.fdi.tutorias.business.entity</value>
-				<value>es.ucm.fdi.social.web</value>
-				<value>es.ucm.fdi.util</value>
-			</array>
-		</property>
-		<property name="jpaVendorAdapter" ref="rootVendorAdapter" />
-		<property name="jpaProperties">
-			<props>
-				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-				<prop key="hibernate.max_fetch_depth">3</prop>
-				<prop key="hibernate.jdbc.fetch_size">50</prop>
-				<prop key="hibernate.jdbc.batch_size">10</prop>
-				<prop key="hibernate.hbm2ddl.import_files">${hibernate.hbm2ddl.import_files}</prop>
-			</props>
-		</property>
-	</bean>
-	
-		
-	
 	<util:properties id="twitterData" >
 		<prop key="consumerKey">${twitter.consumerKey}</prop>
 		<prop key="consumerSecret">${twitter.consumerSecret}</prop>
@@ -73,28 +23,37 @@
 	</util:properties>
 	
 	<util:properties id="gmailData" >
-		<prop key="username">${cfg.mail.username}</prop>
-		<prop key="password">${cfg.mail.password}</prop>
-		<prop key="starttls">${cfg.mail.starttls.enable}</prop>
-		<prop key="host">${cfg.mail.host}</prop>
-		<prop key="port">${cfg.mail.port}</prop>
-		<prop key="auth">${cfg.mail.auth}</prop>		
+		<prop key="username">${mail.username}</prop>
+		<prop key="password">${mail.password}</prop>
+		<prop key="auth">${mail.auth}</prop>		
+		<prop key="starttls">${mail.starttls.enable}</prop>
+		<prop key="host">${mail.host}</prop>
+		<prop key="port">${mail.port}</prop>
 	</util:properties>
 	
+	<util:properties id="storagePrefs">
+		<prop key="rootPath">WEB-INF/storage</prop>
+<!-- 		<prop key="serviceURL">http://localhost:8080/portal/storage/</prop> -->
+		<prop key="serviceURL">http://localhost:8088/portal/storage/</prop>
+	</util:properties>
+
+	<util:properties id="avisosPrefs">
+		<prop key="bucket">avisos</prop>
+	</util:properties>
 	
-
-	<bean id="rootVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
-
-	<bean id="rootDataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		p:basename="classpath:messages" />
+		
+	<!--  -->
+	<!-- MultipartResolver utilizado en MultipartFilter -->
+	<!-- -->
+	<bean id="filterMultipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10240000" />
 	</bean>
 	
-	<tx:annotation-driven transaction-manager="rootTransactionManager" />
-	
-	<bean id="rootTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
-		p:entityManagerFactory-ref="rootEntityManagerFactory" />
+	<import resource="classpath:META-INF/spring/persistence-context.xml" />
+	<import resource="classpath:META-INF/spring/business-context.xml" />
+	<import resource="classpath:META-INF/spring/security.xml" />
 </beans>

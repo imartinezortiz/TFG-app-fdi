@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,16 +18,15 @@ import es.ucm.fdi.users.util.PasswordHash;
 
 @Service
 @Transactional
-public class UsersManager implements UserDetailsService {
+public class UsersManager {
 
 	@Autowired
 	private UserRepository repository;
 	
-	@Override
-	public UserDetails loadUserByUsername(String username)
+	public User getUser(String username)
 			throws UsernameNotFoundException {
 		
-		UserDetails user = repository.findByEmail(username);
+		User user = repository.findByEmail(username);
 		if (user == null)  {
 			user = repository.findByUsername(username);
 		}
@@ -63,6 +60,5 @@ public class UsersManager implements UserDetailsService {
 	public Iterable<User> listUsers() {
 		return repository.findAll();
 	}
-
 	
 }

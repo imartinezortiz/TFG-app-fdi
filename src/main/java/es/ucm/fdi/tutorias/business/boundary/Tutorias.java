@@ -25,9 +25,6 @@ public class Tutorias {
 	TutoriaRepository tutoriaRepository; 
 	
 	@Autowired
-	UserRepository userRepository;
-	
-	@Autowired
 	UsersManager usersManager;
 	
 	public Iterable<Tutoria> getTutorias() {
@@ -51,7 +48,7 @@ public class Tutorias {
 	    User emisor = (User)auth.getPrincipal();
 	    tutoria.setEmisor(emisor);
 	    
-	    User receptor = (User)usersManager.loadUserByUsername(tutoriaBuilder.getDestinatarioUsername());
+	    User receptor = (User)usersManager.getUser(tutoriaBuilder.getDestinatarioUsername());
 	    tutoria.setDestinatario(receptor);
 	    
 		return tutoriaRepository.save(tutoria);

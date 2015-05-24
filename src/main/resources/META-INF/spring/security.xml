@@ -1,50 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:util="http://www.springframework.org/schema/util" xmlns:data="http://www.springframework.org/schema/data/jpa"
-
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx.xsd
-	http://www.springframework.org/schema/util
-	http://www.springframework.org/schema/util/spring-util.xsd
-	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-4.0.xsd
-	http://www.springframework.org/schema/mvc
-	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
-	http://www.springframework.org/schema/data/jpa
-	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 	http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security.xsd">
+	http://www.springframework.org/schema/security/spring-security.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:component-scan base-package="es.ucm.fdi.users.business.boundary" />
-
-	<data:repositories base-package="es.ucm.fdi.users.business.control"
-		entity-manager-factory-ref="rootEntityManagerFactory"
-		transaction-manager-ref="rootTransactionManager" />
-
-	<!-- See https://github.com/spring-projects/spring-security/tree/master/samples/tutorial-xml 
-		sample -->
-
-	<!-- Enables Spring Security debugging infrastructure. This will provide 
-		human-readable (multi-line) debugging information to monitor requests coming 
-		into the security filters. -->
-	<!-- See: http://docs.spring.io/spring-security/site/docs/4.0.0.RC1/reference/htmlsingle/#nsa-debug -->
-	<!-- <debug /> -->
-
-	<!-- This element is used to enable annotation-based security in your application 
-		(by setting the appropriate attributes on the element) -->
-	<!-- See: http://docs.spring.io/spring-security/site/docs/4.0.0.RC1/reference/htmlsingle/#ns-global-method -->
+	<context:component-scan base-package="es.ucm.fdi.users.spring.security" />	
 
 	<global-method-security pre-post-annotations="enabled" />
 
 	<http pattern="/static/**" security="none" />
 	<http pattern="/webjars/**" security="none" />
 
-	<http auto-config="true" create-session="always">
+	<http auto-config="true" create-session="always" use-expressions="true">
 		<intercept-url pattern="/login*" access="isAnonymous()" />
 
 		<intercept-url pattern="/users/**" access="hasRole('ROLE_ADMIN')" />
@@ -60,7 +34,7 @@
 	<beans:bean id="passwordEncoder" class="es.ucm.fdi.users.util.PBKDF2PasswordEncoder" />
 
 	<authentication-manager>
-		<authentication-provider user-service-ref="usersManager">
+		<authentication-provider user-service-ref="usersDetailsManager">
 			<password-encoder ref="passwordEncoder" />
 		</authentication-provider>
 	</authentication-manager>
