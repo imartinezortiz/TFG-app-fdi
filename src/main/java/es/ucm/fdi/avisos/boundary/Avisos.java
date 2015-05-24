@@ -21,7 +21,7 @@ import es.ucm.fdi.storage.business.entity.StorageObjectId;
 import es.ucm.fdi.users.business.control.UserRepository;
 import es.ucm.fdi.users.business.entity.User;
 
-@Transactional("portalTransactionManager")
+@Transactional
 @Service
 public class Avisos {
 	

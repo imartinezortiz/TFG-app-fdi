@@ -24,7 +24,7 @@ import es.ucm.fdi.storage.business.entity.StorageObject;
 import es.ucm.fdi.storage.business.entity.StorageObjectId;
 
 @Service
-@Transactional("storageTransactionManager")
+@Transactional
 public class StorageManager {	
 
 	private static final Logger logger = LoggerFactory

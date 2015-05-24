@@ -18,8 +18,8 @@ import es.ucm.fdi.users.business.entity.UserBuilder;
 import es.ucm.fdi.users.business.entity.UserRole;
 import es.ucm.fdi.users.util.PasswordHash;
 
-@Service(value="usersManager")
-@Transactional("rootTransactionManager")
+@Service
+@Transactional
 public class UsersManager implements UserDetailsService {
 
 	@Autowired

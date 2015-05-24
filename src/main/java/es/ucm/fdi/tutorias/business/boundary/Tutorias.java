@@ -16,7 +16,7 @@ import es.ucm.fdi.users.business.control.UserRepository;
 import es.ucm.fdi.users.business.entity.User;
 
 
-@Transactional("portalTransactionManager")
+@Transactional
 @Service
 public class Tutorias {
 	private static final Logger logger = LoggerFactory.getLogger("es.ucm.fdi.tutorias");

@@ -17,7 +17,7 @@ import es.ucm.fdi.acortador.business.entity.URLredireccionBuilder;
 import es.ucm.fdi.acortador.util.AcortadorURL;
 import es.ucm.fdi.users.business.entity.User;
 
-@Transactional("portalTransactionManager")
+@Transactional
 @Service
 public class URLredirecciones {
 	@Autowired
