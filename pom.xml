@@ -27,6 +27,31 @@
 		<mail.starttls.enable>true</mail.starttls.enable>
 		<mail.host>smtp.example.org</mail.host>
 		<mail.port>587</mail.port>
+		<!-- Default users -->
+		<user1.username>admin</user1.username>
+		<user1.email>admin@example.org</user1.email>
+		<user1.userGivenName>Admin</user1.userGivenName>
+		<user1.userSurname>Admin-Surname</user1.userSurname>
+
+		<user2.username>user1</user2.username>
+		<user2.email>user1@example.org</user2.email>
+		<user2.userGivenName>User1</user2.userGivenName>
+		<user2.userSurname>User1-Surname</user2.userSurname>
+
+		<user3.username>user2</user3.username>
+		<user3.email>user2@example.org</user3.email>
+		<user3.userGivenName>User2</user3.userGivenName>
+		<user3.userSurname>User2-Surname</user3.userSurname>
+
+		<user4.username>user3</user4.username>
+		<user4.email>user3@example.org</user4.email>
+		<user4.userGivenName>User3</user4.userGivenName>
+		<user4.userSurname>User3-Surname</user4.userSurname>
+
+		<user5.username>user4</user5.username>
+		<user5.email>user4@example.org</user5.email>
+		<user5.userGivenName>User4</user5.userGivenName>
+		<user5.userSurname>User4-Surname</user5.userSurname>
 	</properties>
 	<repositories>
 		<repository>
@@ -517,6 +542,27 @@
 				<jdbc.username>postgres</jdbc.username>
 				<jdbc.password>notSecure</jdbc.password>
 				<hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
+				<hibernate.hbm2ddl.auto>create-drop</hibernate.hbm2ddl.auto>
+				<hibernate.hbm2ddl.import_files>users-init.sql,espacios-init.sql,avisos-init.sql</hibernate.hbm2ddl.import_files>
+				<hibernate.show_sql>true</hibernate.show_sql>
+			</properties>
+		</profile>
+		<profile>
+			<id>mysql</id>
+			<dependencies>
+				<!-- MySQL Connector -->
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+					<version>5.1.34</version>
+				</dependency>
+			</dependencies>
+			<properties>
+				<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+				<jdbc.url><![CDATA[jdbc:mysql://localhost:3306/portal?useUnicode=true&characterEncoding=UTF-8]]></jdbc.url>
+				<jdbc.username>portal</jdbc.username>
+				<jdbc.password>portal</jdbc.password>
+				<hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</hibernate.dialect>
 				<hibernate.hbm2ddl.auto>create-drop</hibernate.hbm2ddl.auto>
 				<hibernate.hbm2ddl.import_files>users-init.sql,espacios-init.sql,avisos-init.sql</hibernate.hbm2ddl.import_files>
 				<hibernate.show_sql>true</hibernate.show_sql>
