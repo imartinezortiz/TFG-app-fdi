@@ -46,39 +46,17 @@
 	</jsp-config>
 
 	<!-- -->
-	<!-- Log4J 2 initialization -->
-	<!-- -->
-
-	<!-- Disable automatic Servlet 3.0 initializacion (ServletContainerInitializer) 
-		to avoid bugs in Tomcat behavior -->
-	<context-param>
-		<param-name>isLog4jAutoInitializationDisabled</param-name>
-		<param-value>true</param-value>
-	</context-param>
-
-	<!-- Log4j 2 Servlet 2.5 (manual) initialization -->
-	<listener>
-		<listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
-	</listener>
-	<filter>
-		<filter-name>Log4jServletFilter</filter-name>
-		<filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>Log4jServletFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-
-	<!-- -->
 	<!-- Spring's ROOT context initialization -->
 	<!-- -->
 	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>
+         org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+      </param-value>
+	</context-param>
+	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:META-INF/spring/root-context.xml</param-value>
+		<param-value>es.ucm.fdi.spring.config.AppConfig</param-value>
 	</context-param>
 
 	<listener>
@@ -162,8 +140,14 @@
 		<servlet-name>portal</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
+			<param-name>contextClass</param-name>
+			<param-value>
+              org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+          </param-value>
+		</init-param>
+		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:META-INF/spring/servlet-context.xml</param-value>
+			<param-value>es.ucm.fdi.spring.config.ServletConfig</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

@@ -13,8 +13,12 @@ import es.ucm.fdi.users.business.boundary.UsersManager;
 @Transactional
 public class UsersDetailsManager implements UserDetailsService {
 	
-	@Autowired
 	private UsersManager usersManager;
+	
+	@Autowired
+	public UsersDetailsManager(UsersManager usersManager) {
+		this.usersManager = usersManager;
+	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username)
